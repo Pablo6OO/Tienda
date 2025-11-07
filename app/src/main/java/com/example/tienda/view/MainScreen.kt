@@ -100,16 +100,3 @@ fun ClientScreen(
 }
 
 
-@Preview (showBackground = true)
-@Composable
-fun AppNavigationPreview(){
-    // La CORRECCIÓN MÁS SIMPLE: Llama a AppNavigation sin argumentos.
-    // Como ahora los argumentos son opcionales (null) y usan viewModel() si son null,
-    // el Preview puede crearlos sin el error de 'repository'.
-    AppNavigation(
-        ArriendoRepository,
-        ProductoRepository,
-        VentaRepository,
-        UsuarioRepository
-    )
-}
