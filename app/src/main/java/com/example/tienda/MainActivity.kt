@@ -19,6 +19,16 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             //DENTRO DE AQUÍ DEBEN INSTANCIAR LA FUNCIÓN QUE HARÁ EL FLUJO PRINCIPAL
+      
+            //TiendaTheme(){
+                
+                //Surface(
+                    //modifier = Modifier.fillMaxSize(),
+                    //color = MaterialTheme.colorScheme.background
+                //) {
+                    
+                    //homeScreen()
+            //ando en clases de base datos 2 hoy sabado no pude hacer mucho pero almenos logre que se viera homeScreen (la polera) lo demas no me alcanzo el tiempo para hacerlo funcionar se los dejo aqui como comentario pero deberia cargar
         }
     }
 }
