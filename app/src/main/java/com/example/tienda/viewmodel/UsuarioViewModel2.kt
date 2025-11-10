@@ -13,6 +13,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.security.MessageDigest
 
+data class UsuarioState(
+    val nombre: String = "",
+    val correo: String = "",
+    val clave: String = "",
+    val telefono: String = "",
+    val direccion: String = ""
+)
+
 class UsuarioViewModel2(private val repository: UsuarioRepository) : ViewModel() {
 
     private val _estado = MutableStateFlow(UsuarioState())

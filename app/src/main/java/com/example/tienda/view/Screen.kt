@@ -21,23 +21,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.tienda.viewmodel.UsuarioViewModel2
 
 @Composable
-fun Screen(navController: NavController,viewModel: UsuarioViewModel2, onGuardar: () -> Unit) {
+fun RegistroScreen(viewModel: UsuarioViewModel2, navController: NavController) {
     val estado by viewModel.estado.collectAsState()
-
-    val usuarioActual by viewModel.usuarioActual.collectAsState()
-
-    LaunchedEffect(usuarioActual) {
-        if (usuarioActual != null) {
-            navController.navigate("Perfil")
-        }
-    }
-
 
     Column(
         modifier = Modifier
@@ -47,50 +39,42 @@ fun Screen(navController: NavController,viewModel: UsuarioViewModel2, onGuardar:
         TextField(
             value = estado.nombre,
             onValueChange = { viewModel.onNombreChange(it) },
-            label = { Text("Nombre") },
-            modifier = Modifier.fillMaxWidth()
+            label = { Text("Nombre") }
         )
 
         TextField(
             value = estado.correo,
             onValueChange = { viewModel.onCorreoChange(it) },
-            label = { Text("Correo") },
-            modifier = Modifier.fillMaxWidth()
+            label = { Text("Correo electrónico") }
         )
 
         TextField(
             value = estado.clave,
             onValueChange = { viewModel.onClaveChange(it) },
             label = { Text("Contraseña") },
-            visualTransformation = PasswordVisualTransformation(),
-            modifier = Modifier.fillMaxWidth()
+            visualTransformation = PasswordVisualTransformation()
         )
 
         TextField(
-            value = estado.telefono,
+            value = estado.telefono ?: "",
             onValueChange = { viewModel.onTelefonoChange(it) },
-            label = { Text("Teléfono") },
-            modifier = Modifier.fillMaxWidth()
+            label = { Text("Teléfono (opcional)") }
         )
 
         TextField(
-            value = estado.direccion,
+            value = estado.direccion ?: "",
             onValueChange = { viewModel.onDireccionChange(it) },
-            label = { Text("Dirección") },
-            modifier = Modifier.fillMaxWidth()
+            label = { Text("Dirección (opcional)") }
         )
 
         Spacer(Modifier.height(16.dp))
 
-        Button(
-            onClick = {
-                viewModel.registrarUsuario()
-                navController.navigate("Perfil")
-            },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Guardar cambios")
+        Button(onClick = { viewModel.registrarUsuario() }) {
+            Text("Registrar")
         }
 
+        estado.errores?.correo?.let {
+            Text(it, color = Color.Red)
+        }
     }
 }

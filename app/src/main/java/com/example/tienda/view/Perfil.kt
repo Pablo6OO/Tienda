@@ -1,10 +1,9 @@
-package com.example.tienda.view
-
 import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Environment
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
@@ -26,7 +25,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.navigation.NavController
 import com.example.tienda.viewmodel.PerfilViewModel
-import com.example.tienda.viewmodel.UsuarioViewModel2
+import com.example.tienda.view.ImagenPerfil
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -34,19 +33,23 @@ import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PerfilScreen(navController : NavController, usuarioViewModel: UsuarioViewModel2, viewModel: PerfilViewModel) {
+fun PerfilScreen(navController: NavController, viewModel: PerfilViewModel = remember { PerfilViewModel() }) {
     val context = LocalContext.current
     val imagenUri by viewModel.imagenUri.collectAsState()
-    val usuario by usuarioViewModel.usuarioActual.collectAsState()
-    val descripcion by viewModel.descripcion.collectAsState()
-    var descripcionTemp by remember { mutableStateOf(descripcion) }
 
+    // Campos locales (sin BD)
+    var nombre by remember { mutableStateOf("Usuario Ejemplo") }
+    var correo by remember { mutableStateOf("correo@ejemplo.com") }
+    var descripcion by remember { mutableStateOf("Aquí va tu descripción...") }
+
+    // Galería
     val pickImageLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
     ) { uri ->
         viewModel.setImage(uri)
     }
 
+    // Cámara
     var cameraUri by remember { mutableStateOf<Uri?>(null) }
     val takePictureLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.TakePicture()
@@ -67,7 +70,8 @@ fun PerfilScreen(navController : NavController, usuarioViewModel: UsuarioViewMod
 
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("Perfil de Usuario") },
+            TopAppBar(
+                title = { Text("Perfil de Usuario") },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.Default.ArrowBack, contentDescription = "Volver")
@@ -101,7 +105,7 @@ fun PerfilScreen(navController : NavController, usuarioViewModel: UsuarioViewMod
                         takePictureLauncher.launch(uri)
                     }
                     else -> {
-                        // Aquí podrías manejar permiso no concedido
+                        Toast.makeText(context, "Permiso de cámara no concedido", Toast.LENGTH_SHORT).show()
                     }
                 }
             }) {
@@ -111,18 +115,38 @@ fun PerfilScreen(navController : NavController, usuarioViewModel: UsuarioViewMod
             Spacer(modifier = Modifier.height(24.dp))
 
             // Campos editables
-            Text("Nombre: ${usuario?.nombre ?: "No registrado"}")
+            Text("Nombre", fontWeight = FontWeight.Bold, fontSize = 18.sp)
+            BasicTextField(
+                value = nombre,
+                onValueChange = { nombre = it },
+                textStyle = TextStyle(fontSize = 16.sp, color = Color.Black),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp)
+                    .background(Color(0xFFF1F1F1))
+                    .padding(8.dp)
+            )
+
             Spacer(modifier = Modifier.height(12.dp))
-            Text("Correo: ${usuario?.correo ?: "No registrado"}")
-            Spacer(modifier = Modifier.height(12.dp))
-            Text("Teléfono: ${usuario?.telefono ?: "No registrado"}")
+
+            Text("Correo", fontWeight = FontWeight.Bold, fontSize = 18.sp)
+            BasicTextField(
+                value = correo,
+                onValueChange = { correo = it },
+                textStyle = TextStyle(fontSize = 16.sp, color = Color.Black),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp)
+                    .background(Color(0xFFF1F1F1))
+                    .padding(8.dp)
+            )
 
             Spacer(modifier = Modifier.height(12.dp))
 
             Text("Descripción", fontWeight = FontWeight.Bold, fontSize = 18.sp)
             BasicTextField(
-                value = descripcionTemp,
-                onValueChange = { descripcionTemp = it },
+                value = descripcion,
+                onValueChange = { descripcion = it },
                 textStyle = TextStyle(fontSize = 16.sp, color = Color.Black),
                 modifier = Modifier
                     .fillMaxWidth()
@@ -134,9 +158,9 @@ fun PerfilScreen(navController : NavController, usuarioViewModel: UsuarioViewMod
             Spacer(modifier = Modifier.height(20.dp))
 
             Button(onClick = {
-                viewModel.setDescripcion(descripcionTemp)
+                Toast.makeText(context, "Cambios guardados temporalmente", Toast.LENGTH_SHORT).show()
             }) {
-                Text("Guardar cambios (temporal)")
+                Text("Guardar cambios")
             }
         }
     }
