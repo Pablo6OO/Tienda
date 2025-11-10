@@ -17,5 +17,6 @@ data class Producto(
     val disponibleVenta: Boolean = true,
     val disponibleArriendo: Boolean = false,
     val stock: Int = 0,
+    val imagen : String,
     val fechaCreacion: Long = System.currentTimeMillis() // Fecha de registro del producto
 )

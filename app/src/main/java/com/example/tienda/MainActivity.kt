@@ -3,33 +3,47 @@ package com.example.tienda
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.tienda.data.AppDatabase
+import com.example.tienda.data.repository.UsuarioRepository
 import com.example.tienda.ui.theme.TiendaTheme
+import com.example.tienda.view.PerfilScreen
+import com.example.tienda.view.Screen
+import com.example.tienda.view.homeScreen
+import com.example.tienda.viewmodel.PerfilViewModel
+import com.example.tienda.viewmodel.UsuarioViewModel2
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         setContent {
-            //DENTRO DE AQUÍ DEBEN INSTANCIAR LA FUNCIÓN QUE HARÁ EL FLUJO PRINCIPAL
-      
-            //TiendaTheme(){
-                
-                //Surface(
-                    //modifier = Modifier.fillMaxSize(),
-                    //color = MaterialTheme.colorScheme.background
-                //) {
-                    
-                    //homeScreen()
-            //ando en clases de base datos 2 hoy sabado no pude hacer mucho pero almenos logre que se viera homeScreen (la polera) lo demas no me alcanzo el tiempo para hacerlo funcionar se los dejo aqui como comentario pero deberia cargar
+            TiendaTheme {
+                val navController = rememberNavController()
+
+                val usuarioViewModel: UsuarioViewModel2 = viewModel()
+
+                val perfilViewModel: PerfilViewModel = viewModel()
+
+                NavHost(
+                    navController = navController,
+                    startDestination = "HomeScreen"
+                ) {
+                    composable("Screen") {
+                        Screen(navController, usuarioViewModel) {
+                            navController.popBackStack()
+                        }
+                    }
+                    composable("HomeScreen") {
+                        homeScreen(navController, perfilViewModel)
+                    }
+                    composable("Perfil") {
+                        PerfilScreen(navController, usuarioViewModel, perfilViewModel)
+                    }
+                }
+            }
         }
     }
 }
-
