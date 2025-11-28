@@ -1,4 +1,4 @@
-package com.example.tienda.data.dao
+package com.example.tienda.model.dao
 
 import androidx.room.Dao
 import androidx.room.Delete

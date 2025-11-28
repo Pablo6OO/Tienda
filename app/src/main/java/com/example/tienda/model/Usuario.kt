@@ -12,5 +12,6 @@ data class Usuario(
     val contrasenaHash: String,
     val telefono: String?,
     val direccion: String?,
-    val fechaCreacion: Long = System.currentTimeMillis() // Fecha de registro
+    val fechaCreacion: Long = System.currentTimeMillis(), // Fecha de registro
+    val errores: ErroresUsuario = ErroresUsuario()
 )

@@ -1,6 +1,6 @@
-package com.example.tienda.data.repository
+package com.example.tienda.repository
 
-import com.example.tienda.data.dao.VentaDao
+import com.example.tienda.model.dao.VentaDao
 import com.example.tienda.model.Venta
 import kotlinx.coroutines.flow.Flow
 

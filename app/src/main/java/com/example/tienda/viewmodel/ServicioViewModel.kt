@@ -3,12 +3,11 @@ package com.example.tienda.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.tienda.data.repository.ServicioRepository
+import com.example.tienda.repository.ServicioRepository
 import com.example.tienda.model.Servicio
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 open class ServicioViewModel(private val repository: ServicioRepository) : ViewModel() {
